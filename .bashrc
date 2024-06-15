@@ -9,7 +9,10 @@ case $- in
 esac
 
 export PATH=$PATH:/usr/local/go/bin
+export PATH=$PATH:/.local/bin
+
 eval "$(oh-my-posh init bash --config ~/theme.omp.yaml)"
+
 # don't put duplicate lines or lines starting with space in the history.
 # See bash(1) for more options
 HISTCONTROL=ignoreboth
