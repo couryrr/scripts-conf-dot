@@ -9,7 +9,7 @@ blocks:
   - type: session
     style: plain
     foreground: "#E36464"
-    template: "@{{ .UserName }} "
+    template: "@{{ .UserName }} on @{{ .HostName }}"
   - type: text
     style: plain
     foreground: "#62ED8B"

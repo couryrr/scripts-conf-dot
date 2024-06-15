@@ -9,7 +9,7 @@ case $- in
 esac
 
 export PATH=$PATH:/usr/local/go/bin
-export PATH=$PATH:/.local/bin
+export PATH=$PATH:~/.local/bin
 
 eval "$(oh-my-posh init bash --config ~/theme.omp.yaml)"
 
