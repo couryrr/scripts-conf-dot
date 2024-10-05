@@ -1,2 +1,1 @@
-require("lolz404")
-
+require("config.lazy")
