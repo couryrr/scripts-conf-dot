@@ -9,3 +9,11 @@ vim.keymap.set("n", "<C-u>", "<C-u>zz")
 vim.keymap.set("n", "n", "nzzzv")
 vim.keymap.set("n", "N", "Nzzzv")
 vim.keymap.set("n", "Q", "<nop>")
+
+-- Tab with... tab
+vim.keymap.set("v", "<Tab>", ">>")
+vim.keymap.set("v", "<S-Tab>", "<<")
+vim.keymap.set("n", "<Tab>", ">>")
+vim.keymap.set("n", "<S-Tab>", "<<")
+vim.keymap.set("i", "<Tab>", "<C-i>")
+vim.keymap.set("i", "<S-Tab>", "<C-d>")
