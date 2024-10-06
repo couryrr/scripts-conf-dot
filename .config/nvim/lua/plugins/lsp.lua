@@ -4,6 +4,8 @@ return {
         "williamboman/mason.nvim",
         "williamboman/mason-lspconfig.nvim",
         "hrsh7th/cmp-nvim-lsp",
+        -- I do not think this is needed
+        "hrsh7th/cmp-nvim-lsp-signature-help",
         "hrsh7th/cmp-buffer",
         "hrsh7th/cmp-path",
         "hrsh7th/cmp-cmdline",
@@ -70,9 +72,10 @@ return {
             }),
             sources = cmp.config.sources({
                 { name = 'path' },
-                { name = 'nvim_lsp', keyword_length = 1 },
-                { name = 'luasnip', keyword_length = 2 }, -- For luasnip users.
-                { name = 'buffer', keyword_length = 3 },
+                { name = 'nvim_lsp'},
+                { name = 'luasnip'}, -- For luasnip users.
+                { name = 'buffer'},
+                { name = 'nvim_lsp_signature_help' },
             })
         })
 
