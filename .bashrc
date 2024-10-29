@@ -10,7 +10,8 @@ esac
 
 export PATH=$PATH:/usr/local/go/bin
 export PATH=$PATH:~/.local/bin
-export PATH="$HOME/neovim/bin:$PATH"
+export PATH="/usr/local/bin/neovim/bin:$PATH"
+export PATH="/usr/local/bin/idea-2024.2.3/bin:$PATH"
 
 eval "$(oh-my-posh init bash --config ~/theme.omp.yaml)"
 

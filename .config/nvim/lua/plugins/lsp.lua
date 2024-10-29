@@ -30,6 +30,7 @@ return {
             ensure_installed = {
                 "lua_ls",
                 "gopls",
+                "jdtls",
             },
             handlers = {
                 function(server_name) -- default handler (optional)
@@ -80,6 +81,7 @@ return {
         })
 
         vim.diagnostic.config({
+            virtual_text = false,
             -- update_in_insert = true,
             float = {
                 focusable = false,
@@ -90,5 +92,15 @@ return {
                 prefix = "",
             },
         })
+        vim.keymap.set('n', '<leader>d', function()
+                vim.diagnostic.open_float()
+        end)
+        vim.keymap.set('n', '[d', function()
+                vim.diagnostic.goto_prev()
+        end)
+        vim.keymap.set('n', ']d', function()
+                vim.diagnostic.goto_next()
+        end)
+
     end
 }
