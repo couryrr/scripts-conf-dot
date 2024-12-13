@@ -142,27 +142,6 @@ return {
                     { name = 'nvim_lsp_signature_help' },
                 })
             })
-            vim.diagnostic.config({
-                virtual_text = false,
-                -- update_in_insert = true,
-                float = {
-                    focusable = false,
-                    style = "minimal",
-                    border = "rounded",
-                    source = "always",
-                    header = "",
-                    prefix = "",
-                },
-            })
-            vim.keymap.set('n', '<leader>d', function()
-                vim.diagnostic.open_float()
-            end)
-            vim.keymap.set('n', '[d', function()
-                vim.diagnostic.goto_prev()
-            end)
-            vim.keymap.set('n', ']d', function()
-                vim.diagnostic.goto_next()
-            end)
         end
     }
 }
