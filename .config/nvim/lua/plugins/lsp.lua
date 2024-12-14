@@ -39,6 +39,7 @@ return {
             {'hrsh7th/cmp-nvim-lsp'},
             {'williamboman/mason.nvim'},
             {'williamboman/mason-lspconfig.nvim'},
+            {'L3MON4D3/LuaSnip'},
             {'j-hui/fidget.nvim'},
         },
         init = function()
@@ -90,6 +91,7 @@ return {
                 ensure_installed = {"gopls",
                     "jdtls",
                     "ts_ls",
+                    "emmet_ls",
                     "lua_ls",
                 },
                 handlers = {
