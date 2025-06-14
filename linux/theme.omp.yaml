@@ -1,0 +1,43 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/JanDeDobbeleer/oh-my-posh/main/themes/schema.json
+
+blocks:
+    - type: prompt
+      alignment: left
+      segments:
+        - properties:
+            cache_duration: none
+            style: full
+          template: '{{ .Path }} '
+          foreground: '#56B6C2'
+          type: path
+          style: plain
+        - properties:
+            branch_icon: ""
+            cache_duration: none
+            fetch_status: true
+          template: '{{ .HEAD }}{{ if or .Working.Changed .Staging.Changed }}*{{ end }} {{ if gt .Behind 0 }}⇣{{end}}{{if gt .Ahead 0}}⇡{{end}}'
+          foreground: '#808080'
+          type: git
+          style: plain
+        - properties:
+            cache_duration: none
+          template: '  '
+          foreground: '#DCB977'
+          type: status
+          style: plain
+    - type: prompt
+      alignment: left
+      segments:
+        - properties:
+            cache_duration: none
+            newline: true
+          template: ➜
+          background: transparent
+          type: text
+          style: plain
+          foreground_templates:
+            - '{{ if gt .Code 0 }}#FF6961{{end}}'
+            - '{{ if eq .Code 0 }}#62ED8B{{end}}'
+      newline: true
+version: 3
+final_space: true

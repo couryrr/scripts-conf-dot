@@ -10,7 +10,7 @@ esac
 
 export PATH=$PATH:/usr/local/go/bin
 export PATH=$PATH:~/.local/bin
-export PATH="/usr/local/bin/neovim/bin:$PATH"
+export PATH="$PATH:/opt/nvim-linux-x86_64/bin"
 export PATH="/usr/local/bin/idea-2024.2.3/bin:$PATH"
 
 eval "$(oh-my-posh init bash --config ~/theme.omp.yaml)"
@@ -123,8 +123,6 @@ if ! shopt -oq posix; then
   fi
 fi
 
-source $HOME/.local/bin/hop
-
 export GPG_TTY=$(tty)
 
 #THIS MUST BE AT THE END OF THE FILE FOR SDKMAN TO WORK!!!
@@ -132,3 +130,7 @@ export SDKMAN_DIR="$HOME/.sdkman"
 [[ -s "$HOME/.sdkman/bin/sdkman-init.sh" ]] && source "$HOME/.sdkman/bin/sdkman-init.sh"
 
 
+
+export NVM_DIR="$HOME/.nvm"
+[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
+[ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
