@@ -124,16 +124,18 @@ if ! shopt -oq posix; then
 fi
 
 export GPG_TTY=$(tty)
+export NVM_DIR="$HOME/.nvm"
+[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
+[ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
+
+alias default='tmux -f ~/.config/tmux/tmux.conf new-session -A -s default'
+# opencode
+export PATH=/home/couryrr/.opencode/bin:$PATH
+if command -v tmux &> /dev/null && [ -z "$TMUX" ]; then
+  tmux -f ~/.config/tmux/tmux.conf attach-session -t default || tmux -f ~/.config/tmux/tmux.conf new-session -s default
+fi
 
 #THIS MUST BE AT THE END OF THE FILE FOR SDKMAN TO WORK!!!
 export SDKMAN_DIR="$HOME/.sdkman"
 [[ -s "$HOME/.sdkman/bin/sdkman-init.sh" ]] && source "$HOME/.sdkman/bin/sdkman-init.sh"
 
-
-
-export NVM_DIR="$HOME/.nvm"
-[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
-[ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
-
-# opencode
-export PATH=/home/couryrr/.opencode/bin:$PATH
