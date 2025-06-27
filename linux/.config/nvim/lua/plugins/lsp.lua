@@ -65,6 +65,14 @@ return {
             }
         })
 
+        vim.lsp.config("jdtls", {
+            settings = {
+                jdtls = {
+                    root_markers = { ".git", "build.gradle", "build.gradle.kts", "build.xml", "pom.xml", "settings.gradle", "settings.gradle.kts" }
+                }
+            }
+        })
+
         require("mason").setup({})
         require("mason-lspconfig").setup({
             automatic_enable = true,
@@ -79,11 +87,6 @@ return {
 
         local cmp_select = { behavior = cmp.SelectBehavior.Select }
         cmp.setup({
-            -- snippet = {
-            --     expand = function(args)
-            --         require('luasnip').lsp_expand(args.body) -- For `luasnip` users.
-            --     end,
-            -- },
             mapping = cmp.mapping.preset.insert({
                 ['<C-p>'] = cmp.mapping.select_prev_item(cmp_select),
                 ['<C-n>'] = cmp.mapping.select_next_item(cmp_select),
@@ -96,6 +99,7 @@ return {
                 { name = 'luasnip' }, -- For luasnip users.
                 { name = 'buffer' },
                 { name = 'nvim_lsp_signature_help' },
+                --    { name = "supermaven" },
             })
         })
     end

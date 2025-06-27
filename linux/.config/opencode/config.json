@@ -1,0 +1,38 @@
+{
+  "$schema": "https://opencode.ai/config.json",
+  "theme": "opencode",
+  "model": "anthropic/claude-sonnet-4-20250514",
+  "autoshare": false,
+  "autoupdate": true,
+  "provider": {
+    "openrouter": {
+      "npm": "@openrouter/ai-sdk-provider",
+      "name": "OpenRouter",
+      "options": {},
+      "models": {
+        "anthropic/claude-3.5-sonnet": {
+          "name": "Claude 3.5 Sonnet"
+        }
+      }
+    },
+    "ollama": {
+      "npm": "@ai-sdk/openai-compatible",
+      "options": {
+        "baseURL": "http://localhost:11434/v1"
+      },
+      "models": {
+        "devstral:24b": {"reasoning":true},
+        "deepseek-r1:8b": {"reasoning": true},
+        "qwen2.5:7b": {},
+        "qwen2.5-coder:7b": {}
+      }
+    }
+  },
+  "model": "openrouter/anthropic/claude-3.5-sonnet",
+  "mcp": {
+    "filesystem": {
+      "type": "local",
+      "command": ["/home/couryrr/go/bin/mcp-filesystem-server", "."]
+    }
+  }
+}
