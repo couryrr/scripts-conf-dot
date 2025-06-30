@@ -1,13 +1,15 @@
 return {
     'neovim/nvim-lspconfig',
-    -- cmd = { 'LspInfo', 'LspInstall', 'LspStart' },
-    -- event = { 'BufReadPre', 'BufNewFile' },
     dependencies = {
-        { 'mason-org/mason.nvim' },
-        { 'mason-org/mason-lspconfig.nvim' },
-        { 'j-hui/fidget.nvim' },
-        { 'hrsh7th/cmp-nvim-lsp' },
-        { 'L3MON4D3/LuaSnip' }
+        'mason-org/mason.nvim',
+        'mason-org/mason-lspconfig.nvim',
+        'j-hui/fidget.nvim',
+        'hrsh7th/nvim-cmp',
+        'hrsh7th/cmp-path',
+        'hrsh7th/cmp-buffer',
+        'hrsh7th/cmp-nvim-lsp',
+        'L3MON4D3/LuaSnip',
+        'saadparwaiz1/cmp_luasnip'
     },
     init = function()
         vim.opt.signcolumn = 'yes'
@@ -18,7 +20,6 @@ return {
             desc = 'LSP actions',
             callback = function(event)
                 local opts = { buffer = event.buf }
-
                 vim.keymap.set('n', 'K', '<cmd>lua vim.lsp.buf.hover()<cr>', opts)
                 vim.keymap.set('n', 'gd', '<cmd>lua vim.lsp.buf.definition()<cr>', opts)
                 vim.keymap.set('n', 'gD', '<cmd>lua vim.lsp.buf.declaration()<cr>', opts)
@@ -31,7 +32,6 @@ return {
                 vim.keymap.set('n', '<F4>', '<cmd>lua vim.lsp.buf.code_action()<cr>', opts)
             end,
         })
-
         local cmp = require('cmp')
         local cmp_lsp = require("cmp_nvim_lsp")
         local capabilities = vim.tbl_deep_extend(
@@ -86,20 +86,34 @@ return {
         })
 
         local cmp_select = { behavior = cmp.SelectBehavior.Select }
+        local luasnip = require("luasnip")
         cmp.setup({
+            snippet = {
+                expand = function(args)
+                    luasnip.lsp_expand(args.body)
+                end,
+            },
             mapping = cmp.mapping.preset.insert({
                 ['<C-p>'] = cmp.mapping.select_prev_item(cmp_select),
                 ['<C-n>'] = cmp.mapping.select_next_item(cmp_select),
                 ['<C-y>'] = cmp.mapping.confirm({ select = true }),
                 ["<C-Space>"] = cmp.mapping.complete(),
+                ['<Tab>'] = cmp.mapping(function(fallback)
+                    if luasnip.expand_or_jumpable() then
+                        luasnip.expand_or_jump()
+                    else
+                        fallback()
+                    end
+                end, { 'i', 's' }),
             }),
             sources = cmp.config.sources({
                 { name = 'path' },
                 { name = 'nvim_lsp' },
-                { name = 'luasnip' }, -- For luasnip users.
-                { name = 'buffer' },
+                { name = 'luasnip' },
                 { name = 'nvim_lsp_signature_help' },
                 --    { name = "supermaven" },
+            }, {
+                { name = 'buffer' },
             })
         })
     end
