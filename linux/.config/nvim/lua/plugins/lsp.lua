@@ -68,7 +68,7 @@ return {
         vim.lsp.config("jdtls", {
             settings = {
                 jdtls = {
-                    root_markers = { ".git", "build.gradle", "build.gradle.kts", "build.xml", "pom.xml", "settings.gradle", "settings.gradle.kts" }
+                    root_markers = { ".git", "build.gradle", "build.gradle.kts", "build.xml", "pom.xml", "settings.gradle", "settings.gradle.kts" },
                 }
             }
         })
@@ -111,7 +111,6 @@ return {
                 { name = 'nvim_lsp' },
                 { name = 'luasnip' },
                 { name = 'nvim_lsp_signature_help' },
-                --    { name = "supermaven" },
             }, {
                 { name = 'buffer' },
             })
