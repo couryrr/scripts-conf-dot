@@ -5,16 +5,6 @@
   "autoshare": false,
   "autoupdate": true,
   "provider": {
-    "openrouter": {
-      "npm": "@openrouter/ai-sdk-provider",
-      "name": "OpenRouter",
-      "options": {},
-      "models": {
-        "anthropic/claude-3.5-sonnet": {
-          "name": "Claude 3.5 Sonnet"
-        }
-      }
-    },
     "ollama": {
       "npm": "@ai-sdk/openai-compatible",
       "options": {
