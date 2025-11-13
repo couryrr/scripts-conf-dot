@@ -29,7 +29,16 @@ return {
                 vim.keymap.set('n', 'gs', '<cmd>lua vim.lsp.buf.signature_help()<cr>', opts)
                 vim.keymap.set('n', '<F2>', '<cmd>lua vim.lsp.buf.rename()<cr>', opts)
                 vim.keymap.set({ 'n', 'x' }, '<F3>', '<cmd>lua vim.lsp.buf.format({async = true})<cr>', opts)
-                vim.keymap.set('n', '<F4>', '<cmd>lua vim.lsp.buf.code_action()<cr>', opts)
+                -- vim.keymap.set('n', '<F4>', '<cmd>lua vim.lsp.buf.code_action()<cr>', opts)
+                vim.keymap.set('n', '<F4>', function()
+                    if vim.bo.filetype == 'python' then
+                        vim.lsp.buf.code_action({
+                            context = { only = { 'source.organizeImports', 'quickfix' } }
+                        })
+                    else
+                        vim.lsp.buf.code_action()
+                    end
+                end, opts)
             end,
         })
         local cmp = require('cmp')
@@ -45,6 +54,7 @@ return {
         vim.lsp.config('*', {
             capabilities = capabilities
         })
+
         vim.lsp.config("lua_ls", {
             settings = {
                 Lua = {
@@ -56,17 +66,10 @@ return {
             }
         })
 
-        vim.lsp.config("pylsp", {
-            settings = {
-                filetypes = { "python" },
-                root_markers = { "pyproject.toml", "setup.py", ".git", ".venv" },
-            }
-        })
-
         vim.lsp.config("pyright", {
+            filetypes = { "python" },
+            root_dir = vim.fs.root(0, { "pyproject.toml", "setup.py", ".git", ".venv" }),
             settings = {
-                filetypes = { "python" },
-                root_markers = { "pyproject.toml", "setup.py", ".git", ".venv" },
                 python = {
                     analysis = {
                         autoSearchPaths = true,
@@ -104,6 +107,7 @@ return {
                 "emmet_ls",
                 "lua_ls",
                 "pyright",
+                "ruff",
             }
         })
 
