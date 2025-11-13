@@ -17,12 +17,5 @@
         "qwen2.5-coder:7b": {}
       }
     }
-  },
-  "model": "openrouter/anthropic/claude-3.5-sonnet",
-  "mcp": {
-    "filesystem": {
-      "type": "local",
-      "command": ["/home/couryrr/go/bin/mcp-filesystem-server", "."]
-    }
   }
 }

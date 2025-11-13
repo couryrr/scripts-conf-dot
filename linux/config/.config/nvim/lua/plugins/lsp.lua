@@ -56,6 +56,27 @@ return {
             }
         })
 
+        vim.lsp.config("pylsp", {
+            settings = {
+                filetypes = { "python" },
+                root_markers = { "pyproject.toml", "setup.py", ".git", ".venv" },
+            }
+        })
+
+        vim.lsp.config("pyright", {
+            settings = {
+                filetypes = { "python" },
+                root_markers = { "pyproject.toml", "setup.py", ".git", ".venv" },
+                python = {
+                    analysis = {
+                        autoSearchPaths = true,
+                        diagnosticMode = "workspace",
+                        useLibraryCodeForTypes = true
+                    },
+                }
+            }
+        })
+
         vim.lsp.config("gopls", {
             settings = {
                 gopls = {
@@ -82,6 +103,7 @@ return {
                 "ts_ls",
                 "emmet_ls",
                 "lua_ls",
+                "pyright",
             }
         })
 

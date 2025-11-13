@@ -11,6 +11,10 @@ blocks:
           foreground: '#56B6C2'
           type: path
           style: plain
+        - type: python
+          style: plain
+          foreground: '#808080'
+          template: "(venv) "
         - properties:
             branch_icon: ""
             cache_duration: none
