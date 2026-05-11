@@ -1,0 +1,7 @@
+export PATH=$PATH:/usr/local/go/bin
+export PATH=$PATH:~/.local/bin
+
+export POSH_SESSION_ID="bcc9cfba-5cd4-4281-b03a-a4eafb1a3674"
+source $'/home/couryrichards/.cache/oh-my-posh/init.13003345537930419095.sh'
+
+
