@@ -4,6 +4,8 @@ alias l='ls -CF'
 
 alias default='tmux -f ~/.config/tmux/tmux.conf new-session -A -s default'
 
-if command -v tmux &> /dev/null && [ -z "$TMUX" ]; then
-    tmux -f ~/.config/tmux/tmux.conf attach-session -t default || tmux -f ~/.config/tmux/tmux.conf new-session -s default
+if [ "$TERM_PROGRAM" != "vscode" ]; then
+    if command -v tmux &> /dev/null && [ -z "$TMUX" ]; then
+        tmux -f ~/.config/tmux/tmux.conf attach-session -t default || tmux -f ~/.config/tmux/tmux.conf new-session -s default
+    fi
 fi
