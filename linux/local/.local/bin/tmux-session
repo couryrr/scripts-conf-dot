@@ -1,33 +1,76 @@
 #!/usr/bin/env bash
 
-DEV_FOLDER="$HOME/Development"  # Change this to your development folder path
-DEFAULT_SESSION="default"       # Default session name
+DEV_FOLDER="$HOME/Development"
+DEFAULT_SESSION="default"
 FLOAT_WIDTH="80%"
 FLOAT_HEIGHT="60%"
+
+is_git_repo() {
+    [ -d "$1/.git" ]
+}
+
+is_worktree() {
+    [ -f "$1/.git" ]
+}
+
+has_git_children() {
+    local dir="$1"
+    for subdir in "$dir"/*/; do
+        [ -d "$subdir" ] || continue
+        subdir="${subdir%/}"
+        { is_git_repo "$subdir" || is_worktree "$subdir"; } && return 0
+    done
+    return 1
+}
+
+build_options() {
+    echo "[DEFAULT SESSION]"
+    for dir in "$DEV_FOLDER"/*/; do
+        [ -d "$dir" ] || continue
+        dir="${dir%/}"
+        if is_git_repo "$dir"; then
+            echo "$dir"
+        elif has_git_children "$dir"; then
+            for subdir in "$dir"/*/; do
+                [ -d "$subdir" ] || continue
+                subdir="${subdir%/}"
+                { is_git_repo "$subdir" || is_worktree "$subdir"; } && echo "$subdir"
+            done
+        else
+            echo "$dir"
+        fi
+    done
+}
+
+get_session_name() {
+    local path="$1"
+    local parent
+    parent=$(dirname "$path")
+    if [ "$parent" = "$DEV_FOLDER" ]; then
+        basename "$path"
+    else
+        echo "$(basename "$parent")-$(basename "$path")"
+    fi
+}
 
 select_and_manage_session() {
     if [ ! -d "$DEV_FOLDER" ]; then
         echo "Error: Development folder '$DEV_FOLDER' does not exist"
         exit 1
     fi
-    
-    options=$(find "$DEV_FOLDER" -mindepth 1 -maxdepth 1 -type d)
-    options="[DEFAULT SESSION]\n$options"
-    
-    selected=$(echo -e "$options" | fzf --prompt="Select project: " --height=40% --reverse)
-    
-    if [ -z "$selected" ]; then
-        exit 0
-    fi
-    
+
+    selected=$(build_options | fzf --prompt="Select project: " --height=40% --reverse)
+
+    [ -z "$selected" ] && exit 0
+
     if [ "$selected" = "[DEFAULT SESSION]" ]; then
         session_name="$DEFAULT_SESSION"
-        selected_dir="$HOME"  # Or whatever directory you want for default
+        selected_dir="$HOME"
     else
         selected_dir="$selected"
-        session_name=$(basename "$selected_dir")
+        session_name=$(get_session_name "$selected_dir")
     fi
-    
+
     if tmux has-session -t "$session_name" 2>/dev/null; then
         tmux switch-client -t "$session_name"
     else
@@ -41,4 +84,7 @@ if [ -z "$TMUX" ]; then
     exit 1
 fi
 
-tmux display-popup -w "$FLOAT_WIDTH" -h "$FLOAT_HEIGHT" -E "bash -c 'DEV_FOLDER=\"$DEV_FOLDER\"; DEFAULT_SESSION=\"$DEFAULT_SESSION\"; $(declare -f select_and_manage_session); select_and_manage_session' || true"
+tmux display-popup -w "$FLOAT_WIDTH" -h "$FLOAT_HEIGHT" -E \
+    "bash -c 'DEV_FOLDER=\"$DEV_FOLDER\"; DEFAULT_SESSION=\"$DEFAULT_SESSION\"; \
+    $(declare -f is_git_repo is_worktree has_git_children build_options get_session_name select_and_manage_session); \
+    select_and_manage_session' || true"
