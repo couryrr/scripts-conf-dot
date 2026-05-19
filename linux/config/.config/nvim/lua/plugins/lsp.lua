@@ -89,20 +89,11 @@ return {
             }
         })
 
-        vim.lsp.config("jdtls", {
-            settings = {
-                jdtls = {
-                    root_markers = { ".git", "build.gradle", "build.gradle.kts", "build.xml", "pom.xml", "settings.gradle", "settings.gradle.kts" },
-                }
-            }
-        })
-
         require("mason").setup({})
         require("mason-lspconfig").setup({
             automatic_enable = true,
             ensure_installed = {
                 "gopls",
-                "jdtls",
                 "ts_ls",
                 "emmet_ls",
                 "lua_ls",
