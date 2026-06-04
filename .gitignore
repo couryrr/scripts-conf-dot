@@ -1,3 +1,11 @@
 go
 gh
 uv
+
+# Claude Code: never commit secrets or machine-local state, even if copied
+# into the common/claude package by mistake.
+.credentials.json
+**/.claude/sessions/
+**/.claude/projects/
+**/.claude/history.jsonl
+**/.claude/*-cache.json

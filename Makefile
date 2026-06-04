@@ -8,7 +8,7 @@ else
 endif
 
 COMMON_DIR := common
-COMMON_PACKAGES := config local shell
+COMMON_PACKAGES := config local shell claude
 STOW_TARGET := $(HOME)
 
 .PHONY: install uninstall restow clean brew
