@@ -11,7 +11,15 @@ COMMON_DIR := common
 COMMON_PACKAGES := config local shell claude
 STOW_TARGET := $(HOME)
 
-.PHONY: install uninstall restow clean brew
+.PHONY: install uninstall restow clean brew vscode vscode-pull
+
+# VSCode User settings live on the Windows host under WSL. They are deployed by
+# copy (not stow): VSCode on Windows can't reliably follow a symlink into the
+# WSL filesystem. Override the destination with VSCODE_USER=/path if autodetect
+# fails (e.g. native Linux: ~/.config/Code/User).
+define VSCODE_DIR
+$${VSCODE_USER:-$$(wslpath "$$(cmd.exe /c 'echo %USERPROFILE%' 2>/dev/null | tr -d '\r')" 2>/dev/null)/AppData/Roaming/Code/User}
+endef
 
 install:
 	stow --no-folding -t $(STOW_TARGET) -d $(COMMON_DIR) $(COMMON_PACKAGES)
@@ -27,3 +35,19 @@ clean:
 	stow --no-folding -t $(STOW_TARGET) -d $(OS_DIR) -D $(OS_PACKAGES) || true
 brew:
 	brew bundle --file=$(OS_DIR)/Brewfile
+
+# Deploy repo VSCode settings to the editor's User dir.
+vscode:
+	@dir="$(VSCODE_DIR)"; \
+	test -d "$$dir" || { echo "VSCode User dir not found: $$dir (set VSCODE_USER=...)"; exit 1; }; \
+	cp vscode/settings.json "$$dir/settings.json"; \
+	cp vscode/keybindings.json "$$dir/keybindings.json"; \
+	echo "Deployed VSCode settings -> $$dir"
+
+# Capture the editor's current VSCode settings back into the repo.
+vscode-pull:
+	@dir="$(VSCODE_DIR)"; \
+	test -d "$$dir" || { echo "VSCode User dir not found: $$dir (set VSCODE_USER=...)"; exit 1; }; \
+	cp "$$dir/settings.json" vscode/settings.json; \
+	cp "$$dir/keybindings.json" vscode/keybindings.json; \
+	echo "Pulled VSCode settings <- $$dir"

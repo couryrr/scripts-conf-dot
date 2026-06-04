@@ -1,0 +1,11 @@
+{
+    "workbench.secondarySideBar.defaultVisibility": "hidden",
+    "git.addAICoAuthor": "off",
+    "terminal.integrated.suggest.enabled": false,
+    "editor.minimap.enabled": false,
+    "chat.disableAIFeatures": true,
+    "claudeCode.preferredLocation": "panel",
+    "workbench.startupEditor": "none",
+    "remote.autoForwardPortsSource": "hybrid",
+    "editor.accessibilitySupport": "off"
+}
