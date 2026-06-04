@@ -11,7 +11,7 @@ COMMON_DIR := common
 COMMON_PACKAGES := config local shell claude
 STOW_TARGET := $(HOME)
 
-.PHONY: install uninstall restow clean brew vscode vscode-pull
+.PHONY: install uninstall restow clean brew vscode vscode-pull hooks
 
 # VSCode User settings live on the Windows host under WSL. They are deployed by
 # copy (not stow): VSCode on Windows can't reliably follow a symlink into the
@@ -21,7 +21,7 @@ define VSCODE_DIR
 $${VSCODE_USER:-$$(wslpath "$$(cmd.exe /c 'echo %USERPROFILE%' 2>/dev/null | tr -d '\r')" 2>/dev/null)/AppData/Roaming/Code/User}
 endef
 
-install:
+install: hooks
 	stow --no-folding -t $(STOW_TARGET) -d $(COMMON_DIR) $(COMMON_PACKAGES)
 	stow --no-folding -t $(STOW_TARGET) -d $(OS_DIR) $(OS_PACKAGES)
 uninstall:
@@ -35,6 +35,11 @@ clean:
 	stow --no-folding -t $(STOW_TARGET) -d $(OS_DIR) -D $(OS_PACKAGES) || true
 brew:
 	brew bundle --file=$(OS_DIR)/Brewfile
+
+# Point git at the repo's tracked hooks (core.hooksPath is per-clone config).
+hooks:
+	git config core.hooksPath .githooks
+	@echo "git hooks -> .githooks"
 
 # Deploy repo VSCode settings to the editor's User dir.
 vscode:

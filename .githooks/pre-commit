@@ -1,0 +1,8 @@
+#!/bin/sh
+# Capture live VSCode settings into the repo so commits never drift.
+# No-op on machines without VSCode / outside WSL (make vscode-pull fails);
+# never blocks the commit.
+if make vscode-pull >/dev/null 2>&1; then
+    git add vscode/settings.json vscode/keybindings.json
+fi
+exit 0
