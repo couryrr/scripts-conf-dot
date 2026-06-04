@@ -14,3 +14,10 @@
 	editor = nvim
 [push]
 	autoSetupRemote = true
+[credential "https://dev.azure.com"]
+	useHttpPath = true
+[credential]
+	helper = manager
+	helper =
+	helper = /usr/local/bin/git-credential-manager
+	credentialStore = plaintext
