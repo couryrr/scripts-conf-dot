@@ -1,0 +1,19 @@
+tap "jandedobbeleer/oh-my-posh"
+
+brew "stow"
+brew "neovim"
+brew "tmux"
+brew "fzf"
+brew "gh"
+brew "go"
+brew "nvm"          # Node version manager (needs shell init, see exports)
+brew "uv"           # Python package/installer manager
+brew "awscli"       # AWS CLI
+brew "azure-cli"      # Azure CLI (az)
+brew "kubernetes-cli" # kubectl
+brew "jandedobbeleer/oh-my-posh/oh-my-posh"
+brew "gnupg"        # GPG commit signing (existing signingkey)
+brew "pinentry-mac" # GPG passphrase prompt
+
+cask "font-meslo-lg-nerd-font" # glyphs for the oh-my-posh theme
+cask "visual-studio-code"      # editor (provides the `code` CLI too)

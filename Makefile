@@ -1,14 +1,29 @@
-STOW_PACKAGES := shell config local
-STOW_TARGET := $(HOME)
-STOW_DIR := linux
+UNAME_S := $(shell uname -s)
+ifeq ($(UNAME_S),Darwin)
+  OS_DIR := macos
+  OS_PACKAGES := env shell
+else
+  OS_DIR := linux
+  OS_PACKAGES := env
+endif
 
-.PHONY: install uninstall restow clean
+COMMON_DIR := common
+COMMON_PACKAGES := config local shell
+STOW_TARGET := $(HOME)
+
+.PHONY: install uninstall restow clean brew
 
 install:
-	stow --no-folding -t $(STOW_TARGET) -d $(STOW_DIR) $(STOW_PACKAGES)
+	stow --no-folding -t $(STOW_TARGET) -d $(COMMON_DIR) $(COMMON_PACKAGES)
+	stow --no-folding -t $(STOW_TARGET) -d $(OS_DIR) $(OS_PACKAGES)
 uninstall:
-	stow --no-folding -t $(STOW_TARGET) -d $(STOW_DIR) -D $(STOW_PACKAGES)
+	stow --no-folding -t $(STOW_TARGET) -d $(COMMON_DIR) -D $(COMMON_PACKAGES)
+	stow --no-folding -t $(STOW_TARGET) -d $(OS_DIR) -D $(OS_PACKAGES)
 restow:
-	stow --no-folding -t $(STOW_TARGET) -d $(STOW_DIR) -R $(STOW_PACKAGES)
+	stow --no-folding -t $(STOW_TARGET) -d $(COMMON_DIR) -R $(COMMON_PACKAGES)
+	stow --no-folding -t $(STOW_TARGET) -d $(OS_DIR) -R $(OS_PACKAGES)
 clean:
-	stow --no-folding -t $(STOW_TARGET) -d $(STOW_DIR) -D $(STOW_PACKAGES) || true
+	stow --no-folding -t $(STOW_TARGET) -d $(COMMON_DIR) -D $(COMMON_PACKAGES) || true
+	stow --no-folding -t $(STOW_TARGET) -d $(OS_DIR) -D $(OS_PACKAGES) || true
+brew:
+	brew bundle --file=$(OS_DIR)/Brewfile

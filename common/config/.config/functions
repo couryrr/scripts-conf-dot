@@ -1,0 +1,42 @@
+mfa() {
+  if [ -z "$1" ]; then
+    echo "usage: mfa <6-digit-code>   # gets an MFA session token, writes profile 'aidms-mfa', configures kubectl" >&2
+    return 2
+  fi
+
+  local profile="${MFA_PROFILE:-aidms-mfa}"
+  local region="${AWS_REGION:-us-east-1}"
+  local cluster="${EKS_CLUSTER:-aws-238395401971-aids1addameks01}"
+
+  local out
+  out=$(aws sts get-session-token \
+    --serial-number arn:aws:iam::238395401971:mfa/ms_auth \
+    --profile aidms-admin \
+    --token-code "$1" \
+    --output json) || { echo "mfa: get-session-token failed (bad/expired code?)" >&2; return 1; }
+
+  local key secret token
+  key=$(echo "$out" | jq -r '.Credentials.AccessKeyId')
+  secret=$(echo "$out" | jq -r '.Credentials.SecretAccessKey')
+  token=$(echo "$out" | jq -r '.Credentials.SessionToken')
+  if [ -z "$key" ] || [ "$key" = "null" ]; then
+    echo "mfa: no credentials returned" >&2
+    return 1
+  fi
+
+  # Keep env vars for the current shell (back-compat)
+  export AWS_ACCESS_KEY_ID="$key"
+  export AWS_SECRET_ACCESS_KEY="$secret"
+  export AWS_SESSION_TOKEN="$token"
+
+  # Persist to a named profile so creds survive across shells / new terminals
+  aws configure set aws_access_key_id     "$key"    --profile "$profile"
+  aws configure set aws_secret_access_key "$secret" --profile "$profile"
+  aws configure set aws_session_token     "$token"  --profile "$profile"
+  aws configure set region                "$region" --profile "$profile"
+
+  # Point kubectl at the EKS cluster using that profile (kubeconfig exec plugin
+  # re-reads the on-disk creds, so kubectl keeps working until the token expires)
+  aws eks update-kubeconfig --name "$cluster" --region "$region" --profile "$profile" \
+    && echo "mfa: profile '$profile' set, kubectl configured for $cluster (creds valid ~12h)"
+}

@@ -1,0 +1,11 @@
+[ -x /home/linuxbrew/.linuxbrew/bin/brew ] && \
+    eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)"
+
+export PATH="$HOME/.local/bin:$PATH"
+
+export NVM_DIR="$HOME/.nvm"
+[ -s "/home/linuxbrew/.linuxbrew/opt/nvm/nvm.sh" ] && \
+    source "/home/linuxbrew/.linuxbrew/opt/nvm/nvm.sh"
+
+command -v oh-my-posh >/dev/null && \
+    eval "$(oh-my-posh init bash --config "$HOME/theme.omp.yaml")"
